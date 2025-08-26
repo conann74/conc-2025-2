@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "timer.h"   // Para a medição de tempo (clock_gettime)
-#include <math.h>   // Para o cálculo do erro (fabs)
-
 
 long int n; // Dimensão dos vetores
 float *vetorA; // Vetor A
@@ -40,7 +38,6 @@ int main(int argc, char *argv[]) {
     short int nthreads;
     double start, end, delta;
     FILE * descritorArquivo;
-    pthread_t tid[nthreads];
     float resultado_concorrente = 0.0;
     float resultado_sequencial = 0.0;
 
@@ -77,6 +74,8 @@ int main(int argc, char *argv[]) {
         free(vetorB);
         return 4;
     }
+
+    pthread_t tid[nthreads];
 
     printf("Iniciando o calculo concorrente do produto interno\n");
     GET_TIME(start);//começa a contagem de tempo
@@ -124,8 +123,8 @@ int main(int argc, char *argv[]) {
 
     float erro = (resultado_sequencial - resultado_concorrente) / resultado_sequencial;
 
-    printf("Tempo de execucao concorrente: %lf segundos\n", delta);
-    printf("Variacao Relativa: %e\n", erro);
+    printf("Tempo de execucao concorrente: %.6f segundos\n", delta);
+    printf("Variacao Relativa: %f\n", erro);
     free(vetorA);
     free(vetorB);
     free(somas_parciais);
